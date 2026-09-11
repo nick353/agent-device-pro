@@ -1,6 +1,6 @@
 {
   "name": "verified-device-operator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Verified, fail-closed orchestration layer on top of agent-device.",
   "type": "module",
   "license": "MIT",

@@ -34,5 +34,6 @@ export class AgentDeviceAdapter {
   snapshot() { return this.run(["snapshot", "-i"]); }
   press(selector) { return this.run(["press", selector]); }
   fill(selector, value) { return this.run(["fill", selector, value]); }
+  scroll(direction) { return this.run(["scroll", direction]); }
   recover() { return this.run(["keyboard", "dismiss"]); }
 }

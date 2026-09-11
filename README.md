@@ -16,7 +16,7 @@ This package does not replace or modify the installed `agent-device`. The curren
 
 ## Status
 
-Version `0.1.0` is the first local implementation. It is intentionally conservative: it can observe and verify, but it does not submit external effects unless the caller explicitly uses `press` after all preconditions pass.
+Version `0.1.1` is the first local implementation with verified scrolling. It is intentionally conservative: it can observe and verify, but it does not submit external effects unless the caller explicitly uses `press` after all preconditions pass.
 
 ## Usage
 
@@ -29,6 +29,7 @@ node src/cli.mjs observe --session mypro-physical-qa-20260909
 node src/cli.mjs focus 'id=signup-email-field' --session mypro-physical-qa-20260909
 node src/cli.mjs replace 'id=signup-email-field' 'test@example.com' --session mypro-physical-qa-20260909
 node src/cli.mjs verify 'id=signup-email-field' --value 'test@example.com' --session mypro-physical-qa-20260909
+node src/cli.mjs scroll down --session mypro-physical-qa-20260909
 
 # Every transport call has a bounded timeout.
 node src/cli.mjs observe --session mypro-physical-qa-20260909 --timeout-ms 15000

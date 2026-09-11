@@ -17,7 +17,7 @@ function parse(argv) {
 
 const { command, selector, value, options } = parse(process.argv.slice(2));
 if (!command || command === "help") {
-  console.log("Usage: vdo observe|focus|replace|press|verify <selector> [value] [--session name]");
+  console.log("Usage: vdo observe|focus|replace|press|verify|scroll <selector-or-direction> [value] [--session name]");
   process.exit(0);
 }
 
@@ -29,6 +29,7 @@ try {
   else if (command === "focus") result = await operator.focus(selector);
   else if (command === "replace") result = await operator.replaceText(selector, value);
   else if (command === "press") result = await operator.press(selector);
+  else if (command === "scroll") result = await operator.scroll(selector || "down");
   else if (command === "verify") {
     const snapshot = await operator.observe();
     const target = operator.resolve(snapshot, selector, { requireActionable: false });

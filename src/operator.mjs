@@ -28,7 +28,12 @@ export class VerifiedDeviceOperator {
 
   resolve(snapshot, selector, options = {}) {
     try { return resolveUnique(snapshot, selector, options); }
-    catch (error) { throw new VerifiedDeviceError(error.message.startsWith("target_ambiguous") ? "target_ambiguous" : "target_not_resolved", error.message); }
+    catch (error) {
+      const code = error.message.startsWith("target_ambiguous") ? "target_ambiguous"
+        : error.message.startsWith("target_not_actionable") ? "target_not_actionable"
+        : "target_not_resolved";
+      throw new VerifiedDeviceError(code, error.message);
+    }
   }
 
   async focus(selector) {
@@ -73,6 +78,19 @@ export class VerifiedDeviceOperator {
     if (JSON.stringify(before) === JSON.stringify(after)) throw new VerifiedDeviceError("state_unchanged", "Press was accepted but no UI state change was observed");
     await this.record({ operationId, phase: "press", dispatch: "accepted", verification: "verified", retry: "forbidden", detail: selector });
     return { operationId, dispatch: "accepted", verification: "verified", retry: "forbidden" };
+  }
+
+  async scroll(direction = "down") {
+    if (!new Set(["up", "down", "left", "right", "top", "bottom"]).has(direction)) {
+      throw new VerifiedDeviceError("invalid_scroll_direction", direction);
+    }
+    const before = await this.observe();
+    await this.adapter.scroll(direction);
+    const after = await this.observe();
+    if (JSON.stringify(before) === JSON.stringify(after)) throw new VerifiedDeviceError("state_unchanged", "Scroll was accepted but no UI state change was observed");
+    const operationId = crypto.randomUUID();
+    await this.record({ operationId, phase: "scroll", dispatch: "accepted", verification: "verified", retry: "forbidden", detail: direction });
+    return { operationId, dispatch: "accepted", verification: "verified", retry: "forbidden", direction };
   }
 
   async recoverOnce(reason) {

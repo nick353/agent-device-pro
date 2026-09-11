@@ -47,3 +47,13 @@ test("secret input is fail-closed until a secure provider exists", async () => {
     error => error.code === "secure_secret_provider_required"
   );
 });
+
+test("scroll verifies that the UI changed", async () => {
+  const states = [{ page: 1 }, { page: 2 }];
+  let index = 0;
+  const operator = new VerifiedDeviceOperator({
+    adapter: { snapshot: async () => states[index], scroll: async () => { index += 1; } }
+  });
+  const result = await operator.scroll("down");
+  assert.equal(result.verification, "verified");
+});
