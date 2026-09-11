@@ -28,6 +28,17 @@ test("replace verifies the exact readback", async () => {
   assert.equal(result.verification, "verified");
 });
 
+test("selector role aliases resolve platform naming differences", async () => {
+  const makeField = (value, extra = {}) => ({ type: "TextField", label: "First name", enabled: true, hittable: true, editable: true, value, ...extra });
+  const operator = new VerifiedDeviceOperator({ adapter: adapterFactory([
+    { elements: [makeField("")] },
+    { elements: [makeField("", { focused: true })] },
+    { elements: [makeField("Nichika", { focused: true })] }
+  ]) });
+  const result = await operator.replaceText('role=text-field label="First name"', "Nichika");
+  assert.equal(result.verification, "verified");
+});
+
 test("replace stops on value mismatch instead of retrying", async () => {
   const operator = new VerifiedDeviceOperator({ adapter: adapterFactory([
     { elements: [field("")] },

@@ -47,6 +47,10 @@ export function flattenNodes(root) {
 function same(actual, expected) {
   if (expected === undefined) return true;
   if (actual === undefined || actual === null) return false;
+  if (typeof actual === "string" && typeof expected === "string") {
+    const canonical = value => value.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (canonical(actual) === canonical(expected)) return true;
+  }
   return String(actual).toLowerCase() === String(expected).toLowerCase();
 }
 
