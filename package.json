@@ -1,0 +1,14 @@
+{
+  "name": "verified-device-operator",
+  "version": "0.1.0",
+  "description": "Verified, fail-closed orchestration layer on top of agent-device.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=22.12.0" },
+  "bin": { "vdo": "src/cli.mjs" },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/cli.mjs && node --check src/operator.mjs && node --check src/selector.mjs && node --check src/agent-device-adapter.mjs"
+  },
+  "files": ["src", "test", "README.md", "LICENSE", "CHANGELOG.md"]
+}
